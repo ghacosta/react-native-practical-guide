@@ -1,22 +1,30 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View } from 'react-native';
+import { connect } from 'react-redux';
+import PlaceInput from '../../components/PlaceInput/PlaceInput';
+import { addPlace } from '../../store/actions/index';
 
-class SharePlace extends Component {
+class SharePlaceScreen extends Component {
+  placeAddedHandler = placeName => {
+    this.props.onAddPlace(placeName);
+  };
+
   render() {
     return (
-      <View style={styles.container}>
-        <Text>Share Place</Text>
+      <View>
+        <PlaceInput onPlaceAdded={this.placeAddedHandler} />
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
-  }
-});
+const mapDispatchToProps = dispatch => {
+  return {
+    onAddPlace: placeName => dispatch(addPlace(placeName))
+  };
+};
 
-export default SharePlace;
+export default connect(
+  null,
+  mapDispatchToProps
+)(SharePlaceScreen);

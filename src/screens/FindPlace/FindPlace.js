@@ -1,22 +1,26 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { connect } from 'react-redux';
+import { View, Button } from 'react-native';
+import PlaceList from '../../components/PlaceList/PlaceList';
 
-class FindPlace extends Component {
+class FindPlaceScreen extends Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Text>Find Place</Text>
+      <View>
+        <PlaceList places={this.props.places} />
+        <Button
+          title="Go to PlaceDetail"
+          onPress={() => this.props.navigation.navigate('PlaceDetail')}
+        />
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
-  }
-});
+const mapStateToProps = state => {
+  return {
+    places: state.places.places
+  };
+};
 
-export default FindPlace;
+export default connect(mapStateToProps)(FindPlaceScreen);

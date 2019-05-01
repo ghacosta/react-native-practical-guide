@@ -1,8 +1,7 @@
-import { ADD_PLACE, DELETE_PLACE, SELECT_PLACE, DESELECT_PLACE } from '../actions/actionTypes';
+import { ADD_PLACE, DELETE_PLACE } from '../actions/actionTypes';
 
 const initialState = {
-  places: [],
-  selectedPlace: null,
+  places: []
 };
 
 const reducer = (state = initialState, action) => {
@@ -10,11 +9,12 @@ const reducer = (state = initialState, action) => {
     case ADD_PLACE:
       return {
         ...state,
-        places: state.places.concat({ 
-          key: Math.random().toString(), 
+        places: state.places.concat({
+          key: Math.random().toString(),
           name: action.placeName,
           image: {
-            uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTytWiJFmUW9EgMDpn9plx2_JjcGq5HjslF9L-kyou_fVGRhUkT'
+            uri:
+              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTytWiJFmUW9EgMDpn9plx2_JjcGq5HjslF9L-kyou_fVGRhUkT'
           }
         })
       };
@@ -26,18 +26,6 @@ const reducer = (state = initialState, action) => {
         }),
         selectedPlace: null
       };
-    case SELECT_PLACE:
-      return {
-        ...state,
-        selectedPlace: state.places.find(place => {
-          return place.key === action.placeKey;
-        })
-      };
-    case DESELECT_PLACE:
-      return {
-        ...state,
-        selectedPlace: null
-      }
     default:
       return state;
   }
