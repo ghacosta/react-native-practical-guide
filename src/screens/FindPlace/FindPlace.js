@@ -4,13 +4,22 @@ import { View, Button } from 'react-native';
 import PlaceList from '../../components/PlaceList/PlaceList';
 
 class FindPlaceScreen extends Component {
+  itemSelectedHandler = key => {
+    const selectedPlace = this.props.places.find(place => {
+      return place.key === key;
+    });
+    this.props.navigation.push('PlaceDetail', {
+      selectedPlace,
+      title: selectedPlace.name
+    });
+  };
+
   render() {
     return (
       <View>
-        <PlaceList places={this.props.places} />
-        <Button
-          title="Go to PlaceDetail"
-          onPress={() => this.props.navigation.navigate('PlaceDetail')}
+        <PlaceList
+          places={this.props.places}
+          onItemSelected={this.itemSelectedHandler}
         />
       </View>
     );
