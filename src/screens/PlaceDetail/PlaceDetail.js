@@ -7,12 +7,21 @@ import {
   StyleSheet,
   TouchableOpacity
 } from 'react-native';
+import { connect } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
+import { deletePlace } from '../../store/actions/index';
 
 class PlaceDetailScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
     title: navigation.getParam('title')
   });
+
+  placeDeletedHandler = () => {
+    this.props.onDeletePlace(
+      this.props.navigation.getParam('selectedPlace').key
+    );
+    this.props.navigation.pop();
+  };
 
   render() {
     const selectedPlace = this.props.navigation.getParam('selectedPlace');
@@ -23,7 +32,7 @@ class PlaceDetailScreen extends Component {
           <Text style={styles.placeName}>{selectedPlace.name}</Text>
         </View>
         <View>
-          <TouchableOpacity onPress={this.props.onItemDeleted}>
+          <TouchableOpacity onPress={this.placeDeletedHandler}>
             <View style={styles.deleteButton}>
               <Ionicons size={32} name="ios-trash" color="red" />
             </View>
@@ -52,4 +61,13 @@ const styles = StyleSheet.create({
   }
 });
 
-export default PlaceDetailScreen;
+const mapDispatchToProps = dispatch => {
+  return {
+    onDeletePlace: key => dispatch(deletePlace(key))
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(PlaceDetailScreen);
