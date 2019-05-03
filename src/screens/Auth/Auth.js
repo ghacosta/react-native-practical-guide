@@ -1,11 +1,28 @@
 import React, { Component } from 'react';
-import { ImageBackground, View, Button, StyleSheet } from 'react-native';
+import {
+  ImageBackground,
+  View,
+  Button,
+  StyleSheet,
+  AsyncStorage
+} from 'react-native';
 import backgroundImage from '../../assets/background.jpeg';
 import HeadingText from '../../components/UI/HeadingText/HeadingText';
 import MainText from '../../components/UI/MainText/MainText';
 import DefaultInput from '../../components/UI/DefaultInput/DefaultInput';
 
 class AuthScreen extends Component {
+  constructor() {
+    super();
+    this.removeUserToken();
+  }
+  removeUserToken = async () => {
+    await AsyncStorage.removeItem('userToken');
+  };
+  submitLogInHandler = async () => {
+    await AsyncStorage.setItem('userToken', 'guille');
+    this.props.navigation.navigate('Places');
+  };
   render() {
     return (
       <ImageBackground source={backgroundImage} style={styles.imageBackground}>
@@ -25,10 +42,7 @@ class AuthScreen extends Component {
             <DefaultInput placeholder="Password" style={styles.input} />
             <DefaultInput placeholder="Confirm Password" style={styles.input} />
           </View>
-          <Button
-            title="Submit"
-            onPress={() => this.props.navigation.navigate('Places')}
-          />
+          <Button title="Submit" onPress={this.submitLogInHandler} />
         </View>
       </ImageBackground>
     );
