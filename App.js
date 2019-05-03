@@ -8,6 +8,7 @@ import {
 } from 'react-navigation';
 import { Provider } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
+import AuthLoadingScreen from './src/screens/AuthLoading/AuthLoading';
 import AuthScreen from './src/screens/Auth/Auth';
 import FindPlaceScreen from './src/screens/FindPlace/FindPlace';
 import SharePlaceScreen from './src/screens/SharePlace/SharePlace';
@@ -61,7 +62,7 @@ const SharePlaceStack = createStackNavigator({
   }
 });
 
-const DashboardTabNavigator = createBottomTabNavigator(
+const AppTabNavigator = createBottomTabNavigator(
   {
     FindPlace: {
       screen: FindPlaceStack,
@@ -93,9 +94,9 @@ const DashboardTabNavigator = createBottomTabNavigator(
   }
 );
 
-const DashboardStackNavigator = createStackNavigator(
+const AppStackNavigator = createStackNavigator(
   {
-    DashboardTabNavigator: DashboardTabNavigator
+    AppTabNavigator: AppTabNavigator
   },
   {
     defaultNavigationOptions: ({ navigation }) => {
@@ -115,11 +116,20 @@ const DashboardStackNavigator = createStackNavigator(
 
 const AppDrawerNavigator = createDrawerNavigator(
   {
-    Dashboard: {
-      screen: DashboardStackNavigator,
+    Places: {
+      screen: AppStackNavigator,
       navigationOptions: {
         drawerIcon: ({ tintColor }) => (
           <Ionicons name="ios-paper" size={30} color={tintColor} />
+        )
+      }
+    },
+    Auth: {
+      screen: AuthScreen,
+      params: { token: null },
+      navigationOptions: {
+        drawerIcon: ({ tintColor }) => (
+          <Ionicons name="ios-log-out" size={30} color={tintColor} />
         )
       }
     }
@@ -133,8 +143,9 @@ const AppDrawerNavigator = createDrawerNavigator(
 );
 
 const AppSwitchNavigator = createSwitchNavigator({
+  AuthLoading: { screen: AuthLoadingScreen },
   Auth: { screen: AuthScreen },
-  Dashboard: { screen: AppDrawerNavigator }
+  App: { screen: AppDrawerNavigator }
 });
 
 const AppContainer = createAppContainer(AppSwitchNavigator);

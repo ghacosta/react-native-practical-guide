@@ -27,7 +27,7 @@ class AuthScreen extends Component {
           </View>
           <Button
             title="Submit"
-            onPress={() => this.props.navigation.navigate('Dashboard')}
+            onPress={() => this.props.navigation.navigate('Places')}
           />
         </View>
       </ImageBackground>
