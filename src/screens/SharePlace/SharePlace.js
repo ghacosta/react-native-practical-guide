@@ -1,22 +1,65 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import PlaceInput from '../../components/PlaceInput/PlaceInput';
 import { addPlace } from '../../store/actions/index';
+import PlaceInput from '../../components/PlaceInput/PlaceInput';
+import PickImage from '../../components/PickImage/PickImage';
+import PickLocation from '../../components/PickLocation/PickLocation';
+import HeadingText from '../../components/UI/HeadingText/HeadingText';
+import MainText from '../../components/UI/MainText/MainText';
+import DefaultButton from '../../components/UI/DefaultButton/DefaultButton';
 
 class SharePlaceScreen extends Component {
-  placeAddedHandler = placeName => {
-    this.props.onAddPlace(placeName);
+  state = {
+    placeName: ''
+  };
+
+  placeNameChangedHandler = val => {
+    this.setState({ placeName: val });
+  };
+
+  placeAddedHandler = () => {
+    if (this.state.placeName.trim() !== '') {
+      this.props.onAddPlace(this.state.placeName);
+    }
   };
 
   render() {
     return (
-      <View>
-        <PlaceInput onPlaceAdded={this.placeAddedHandler} />
-      </View>
+      <ScrollView>
+        <View style={styles.container}>
+          <MainText>
+            <HeadingText>Share a place with us!</HeadingText>
+          </MainText>
+          <PickImage />
+          <PickLocation />
+          <PlaceInput
+            placeName={this.state.placeName}
+            onChangeText={this.placeNameChangedHandler}
+          />
+          <DefaultButton
+            title="Share the Place!"
+            onPress={this.placeAddedHandler}
+          />
+        </View>
+      </ScrollView>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center'
+  },
+  placeholder: {
+    borderWidth: 1,
+    borderColor: 'black',
+    backgroundColor: '#eee',
+    width: '80%',
+    height: 150
+  }
+});
 
 const mapDispatchToProps = dispatch => {
   return {

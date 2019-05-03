@@ -10,7 +10,9 @@ const defaultFont = Platform.OS === 'android' ? 'sans-serif' : 'Avenir';
 const styles = StyleSheet.create({
   mainText: {
     color: '#bbb',
-    fontFamily: defaultFont
+    fontFamily: defaultFont,
+    backgroundColor: 'transparent',
+    fontSize: 20
   }
 });
 

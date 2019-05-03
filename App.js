@@ -7,12 +7,13 @@ import {
   createStackNavigator
 } from 'react-navigation';
 import { Provider } from 'react-redux';
+import { Ionicons } from '@expo/vector-icons';
 import AuthScreen from './src/screens/Auth/Auth';
 import FindPlaceScreen from './src/screens/FindPlace/FindPlace';
 import SharePlaceScreen from './src/screens/SharePlace/SharePlace';
 import PlaceDetailScreen from './src/screens/PlaceDetail/PlaceDetail';
+import CustomDrawer from './src/components/CustomDrawer/CustomDrawer';
 import configureStore from './src/store/configureStore';
-import { Ionicons } from '@expo/vector-icons';
 
 const FindPlaceStack = createStackNavigator(
   {
@@ -62,8 +63,24 @@ const SharePlaceStack = createStackNavigator({
 
 const DashboardTabNavigator = createBottomTabNavigator(
   {
-    FindPlaceStack,
-    SharePlaceStack
+    FindPlace: {
+      screen: FindPlaceStack,
+      navigationOptions: {
+        tabBarLabel: 'Find Place',
+        tabBarIcon: ({ tintColor }) => (
+          <Ionicons name="md-map" size={30} color={tintColor} />
+        )
+      }
+    },
+    SharePlace: {
+      screen: SharePlaceStack,
+      navigationOptions: {
+        tabBarLabel: 'Share Place',
+        tabBarIcon: ({ tintColor }) => (
+          <Ionicons name="md-share-alt" size={30} color={tintColor} />
+        )
+      }
+    }
   },
   {
     navigationOptions: ({ navigation }) => {
@@ -96,9 +113,24 @@ const DashboardStackNavigator = createStackNavigator(
   }
 );
 
-const AppDrawerNavigator = createDrawerNavigator({
-  Dashboard: { screen: DashboardStackNavigator }
-});
+const AppDrawerNavigator = createDrawerNavigator(
+  {
+    Dashboard: {
+      screen: DashboardStackNavigator,
+      navigationOptions: {
+        drawerIcon: ({ tintColor }) => (
+          <Ionicons name="ios-paper" size={30} color={tintColor} />
+        )
+      }
+    }
+  },
+  {
+    contentComponent: CustomDrawer,
+    contentOptions: {
+      activeTintColor: '#EC734D'
+    }
+  }
+);
 
 const AppSwitchNavigator = createSwitchNavigator({
   Auth: { screen: AuthScreen },
