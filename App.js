@@ -6,6 +6,7 @@ import {
   createBottomTabNavigator,
   createStackNavigator
 } from 'react-navigation';
+import { Platform } from 'react-native';
 import { Provider } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 import AuthLoadingScreen from './src/screens/AuthLoading/AuthLoading';
@@ -15,6 +16,8 @@ import SharePlaceScreen from './src/screens/SharePlace/SharePlace';
 import PlaceDetailScreen from './src/screens/PlaceDetail/PlaceDetail';
 import CustomDrawer from './src/components/CustomDrawer/CustomDrawer';
 import configureStore from './src/store/configureStore';
+
+const isAndroid = () => Platform.OS === 'android';
 
 const FindPlaceStack = createStackNavigator(
   {
@@ -69,7 +72,11 @@ const AppTabNavigator = createBottomTabNavigator(
       navigationOptions: {
         tabBarLabel: 'Find Place',
         tabBarIcon: ({ tintColor }) => (
-          <Ionicons name="md-map" size={30} color={tintColor} />
+          <Ionicons
+            name={isAndroid() ? 'md-map' : 'ios-map'}
+            size={30}
+            color={tintColor}
+          />
         )
       }
     },
@@ -78,7 +85,11 @@ const AppTabNavigator = createBottomTabNavigator(
       navigationOptions: {
         tabBarLabel: 'Share Place',
         tabBarIcon: ({ tintColor }) => (
-          <Ionicons name="md-share-alt" size={30} color={tintColor} />
+          <Ionicons
+            name={isAndroid() ? 'md-share-alt' : 'ios-share'}
+            size={30}
+            color={tintColor}
+          />
         )
       }
     }
@@ -94,25 +105,9 @@ const AppTabNavigator = createBottomTabNavigator(
   }
 );
 
-const AppStackNavigator = createStackNavigator(
-  {
-    AppTabNavigator: AppTabNavigator
-  },
-  {
-    defaultNavigationOptions: ({ navigation }) => {
-      return {
-        headerLeft: (
-          <Ionicons
-            style={{ paddingLeft: 10 }}
-            onPress={() => navigation.openDrawer()}
-            name="md-menu"
-            size={30}
-          />
-        )
-      };
-    }
-  }
-);
+const AppStackNavigator = createStackNavigator({
+  AppTabNavigator: AppTabNavigator
+});
 
 const AppDrawerNavigator = createDrawerNavigator(
   {
@@ -124,7 +119,7 @@ const AppDrawerNavigator = createDrawerNavigator(
         )
       }
     },
-    Auth: {
+    'Sign Out': {
       screen: AuthScreen,
       params: { token: null },
       navigationOptions: {

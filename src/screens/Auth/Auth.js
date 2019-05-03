@@ -10,6 +10,7 @@ import backgroundImage from '../../assets/background.jpeg';
 import HeadingText from '../../components/UI/HeadingText/HeadingText';
 import MainText from '../../components/UI/MainText/MainText';
 import DefaultInput from '../../components/UI/DefaultInput/DefaultInput';
+import DefaultButton from '../../components/UI/DefaultButton/DefaultButton';
 
 class AuthScreen extends Component {
   constructor() {
@@ -20,7 +21,7 @@ class AuthScreen extends Component {
     await AsyncStorage.removeItem('userToken');
   };
   submitLogInHandler = async () => {
-    await AsyncStorage.setItem('userToken', 'guille');
+    await AsyncStorage.setItem('userToken', new Date().getTime().toString());
     this.props.navigation.navigate('Places');
   };
   render() {
@@ -30,7 +31,7 @@ class AuthScreen extends Component {
           <MainText>
             <HeadingText>Please Log In</HeadingText>
           </MainText>
-          <Button
+          <DefaultButton
             title="Switch to LogIn"
             onPress={() => alert('button pressed')}
           />
@@ -42,7 +43,7 @@ class AuthScreen extends Component {
             <DefaultInput placeholder="Password" style={styles.input} />
             <DefaultInput placeholder="Confirm Password" style={styles.input} />
           </View>
-          <Button title="Submit" onPress={this.submitLogInHandler} />
+          <DefaultButton title="Submit" onPress={this.submitLogInHandler} />
         </View>
       </ImageBackground>
     );
