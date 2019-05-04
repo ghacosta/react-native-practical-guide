@@ -5,7 +5,8 @@ import {
   Text,
   Button,
   StyleSheet,
-  TouchableOpacity
+  TouchableOpacity,
+  Platform
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
@@ -34,7 +35,11 @@ class PlaceDetailScreen extends Component {
         <View>
           <TouchableOpacity onPress={this.placeDeletedHandler}>
             <View style={styles.deleteButton}>
-              <Ionicons size={32} name="ios-trash" color="red" />
+              <Ionicons
+                size={32}
+                name={Platform.OS === 'android' ? 'md-trash' : 'ios-trash'}
+                color="red"
+              />
             </View>
           </TouchableOpacity>
         </View>

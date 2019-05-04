@@ -14,10 +14,12 @@ const defaultInput = props => {
 const styles = StyleSheet.create({
   input: {
     width: '100%',
+    backgroundColor: '#eee',
     borderWidth: 1,
     borderColor: '#eee',
     padding: 5,
-    margin: 8
+    marginTop: 8,
+    marginBottom: 8
   }
 });
 

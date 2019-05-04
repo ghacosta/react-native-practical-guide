@@ -4,7 +4,8 @@ import {
   View,
   Button,
   StyleSheet,
-  AsyncStorage
+  AsyncStorage,
+  Dimensions
 } from 'react-native';
 import backgroundImage from '../../assets/background.jpeg';
 import HeadingText from '../../components/UI/HeadingText/HeadingText';
@@ -13,10 +14,23 @@ import DefaultInput from '../../components/UI/DefaultInput/DefaultInput';
 import DefaultButton from '../../components/UI/DefaultButton/DefaultButton';
 
 class AuthScreen extends Component {
-  constructor() {
-    super();
+  state = {
+    viewMode: Dimensions.get('window').height > 500 ? 'portrait' : 'landscape'
+  };
+
+  constructor(props) {
+    super(props);
     this.removeUserToken();
+    Dimensions.addEventListener('change', this.updateStyles);
   }
+  componentWillUnmount() {
+    Dimensions.removeEventListener('change', this.updateStyles);
+  }
+  updateStyles = dims => {
+    this.setState({
+      viewMode: dims.window.height > 500 ? 'portrait' : 'landscape'
+    });
+  };
   removeUserToken = async () => {
     await AsyncStorage.removeItem('userToken');
   };
@@ -36,12 +50,33 @@ class AuthScreen extends Component {
             onPress={() => alert('button pressed')}
           />
           <View style={styles.inputContainer}>
-            <DefaultInput
-              placeholder="Your e-mail address"
-              style={styles.input}
-            />
-            <DefaultInput placeholder="Password" style={styles.input} />
-            <DefaultInput placeholder="Confirm Password" style={styles.input} />
+            <DefaultInput placeholder="Your e-mail address" />
+            <View
+              style={
+                this.state.viewMode === 'portrait'
+                  ? styles.portraitPasswordContainer
+                  : styles.landscapePasswordContainer
+              }
+            >
+              <View
+                style={
+                  this.state.viewMode === 'portrait'
+                    ? styles.portraitPasswordWrapper
+                    : styles.landscapePasswordWrapper
+                }
+              >
+                <DefaultInput placeholder="Password" />
+              </View>
+              <View
+                style={
+                  this.state.viewMode === 'portrait'
+                    ? styles.portraitPasswordWrapper
+                    : styles.landscapePasswordWrapper
+                }
+              >
+                <DefaultInput placeholder="Confirm Password" />
+              </View>
+            </View>
           </View>
           <DefaultButton title="Submit" onPress={this.submitLogInHandler} />
         </View>
@@ -63,9 +98,19 @@ const styles = StyleSheet.create({
   inputContainer: {
     width: '80%'
   },
-  input: {
-    backgroundColor: '#eee',
-    borderColor: '#bbb'
+  portraitPasswordContainer: {
+    flexDirection: 'column',
+    justifyContent: 'flex-start'
+  },
+  landscapePasswordContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  portraitPasswordWrapper: {
+    width: '100%'
+  },
+  landscapePasswordWrapper: {
+    width: '45%'
   }
 });
 

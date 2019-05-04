@@ -30,7 +30,7 @@ const FindPlaceStack = createStackNavigator(
             <Ionicons
               style={{ paddingLeft: 10 }}
               onPress={() => navigation.openDrawer()}
-              name="md-menu"
+              name={isAndroid() ? 'md-menu' : 'ios-menu'}
               size={30}
             />
           )
@@ -56,7 +56,7 @@ const SharePlaceStack = createStackNavigator({
           <Ionicons
             style={{ paddingLeft: 10 }}
             onPress={() => navigation.openDrawer()}
-            name="md-menu"
+            name={isAndroid() ? 'md-menu' : 'ios-menu'}
             size={30}
           />
         )
@@ -115,7 +115,11 @@ const AppDrawerNavigator = createDrawerNavigator(
       screen: AppStackNavigator,
       navigationOptions: {
         drawerIcon: ({ tintColor }) => (
-          <Ionicons name="ios-paper" size={30} color={tintColor} />
+          <Ionicons
+            name={isAndroid() ? 'md-paper' : 'ios-paper'}
+            size={30}
+            color={tintColor}
+          />
         )
       }
     },
@@ -124,7 +128,11 @@ const AppDrawerNavigator = createDrawerNavigator(
       params: { token: null },
       navigationOptions: {
         drawerIcon: ({ tintColor }) => (
-          <Ionicons name="ios-log-out" size={30} color={tintColor} />
+          <Ionicons
+            name={isAndroid() ? 'md-log-out' : 'ios-log-out'}
+            size={30}
+            color={tintColor}
+          />
         )
       }
     }
