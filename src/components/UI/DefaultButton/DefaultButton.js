@@ -34,7 +34,7 @@ const defaultButton = props => {
 const styles = StyleSheet.create({
   button: {
     borderRadius: 2,
-    padding: 6,
+    padding: 10,
     margin: 8
   },
   text: {

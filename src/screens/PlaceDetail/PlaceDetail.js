@@ -3,19 +3,39 @@ import {
   View,
   Image,
   Text,
-  Button,
+  ScrollView,
   StyleSheet,
   TouchableOpacity,
-  Platform
+  Platform,
+  Dimensions
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 import { deletePlace } from '../../store/actions/index';
 
 class PlaceDetailScreen extends Component {
+  state = {
+    viewMode: Dimensions.get('window').height > 500 ? 'portrait' : 'landscape'
+  };
+
   static navigationOptions = ({ navigation }) => ({
     title: navigation.getParam('title')
   });
+
+  constructor(props) {
+    super(props);
+    Dimensions.addEventListener('change', this.updateStyles);
+  }
+
+  componentWillUnmount() {
+    Dimensions.removeEventListener('change', this.updateStyles);
+  }
+
+  updateStyles = dims => {
+    this.setState({
+      viewMode: dims.window.height > 500 ? 'portrait' : 'landscape'
+    });
+  };
 
   placeDeletedHandler = () => {
     this.props.onDeletePlace(
@@ -27,21 +47,32 @@ class PlaceDetailScreen extends Component {
   render() {
     const selectedPlace = this.props.navigation.getParam('selectedPlace');
     return (
-      <View style={styles.container}>
-        <View>
+      <View
+        style={[
+          styles.container,
+          this.state.viewMode === 'portrait'
+            ? styles.portraitContainer
+            : styles.landscapeContainer
+        ]}
+      >
+        <View style={styles.subContainer}>
           <Image source={selectedPlace.image} style={styles.placeImage} />
-          <Text style={styles.placeName}>{selectedPlace.name}</Text>
         </View>
-        <View>
-          <TouchableOpacity onPress={this.placeDeletedHandler}>
-            <View style={styles.deleteButton}>
-              <Ionicons
-                size={32}
-                name={Platform.OS === 'android' ? 'md-trash' : 'ios-trash'}
-                color="red"
-              />
-            </View>
-          </TouchableOpacity>
+        <View style={styles.subContainer}>
+          <View>
+            <Text style={styles.placeName}>{selectedPlace.name}</Text>
+          </View>
+          <View>
+            <TouchableOpacity onPress={this.placeDeletedHandler}>
+              <View style={styles.deleteButton}>
+                <Ionicons
+                  size={32}
+                  name={Platform.OS === 'android' ? 'md-trash' : 'ios-trash'}
+                  color="red"
+                />
+              </View>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     );
@@ -50,7 +81,17 @@ class PlaceDetailScreen extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    margin: 22
+    margin: 22,
+    flex: 1
+  },
+  subContainer: {
+    flex: 1
+  },
+  portraitContainer: {
+    flexDirection: 'column'
+  },
+  landscapeContainer: {
+    flexDirection: 'row'
   },
   placeImage: {
     height: 200,
