@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, StyleSheet } from 'react-native';
 
-const defaultInput = props => {
+const headingText = props => {
   return (
     <Text {...props} style={[styles.textHeading, props.style]}>
       {props.children}
@@ -16,4 +16,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default defaultInput;
+export default headingText;

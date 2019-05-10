@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
+import { Input, Button } from 'react-native-elements';
 import { addPlace } from '../../store/actions/index';
-import PlaceInput from '../../components/PlaceInput/PlaceInput';
 import PickImage from '../../components/PickImage/PickImage';
 import PickLocation from '../../components/PickLocation/PickLocation';
 import HeadingText from '../../components/UI/HeadingText/HeadingText';
 import MainText from '../../components/UI/MainText/MainText';
-import DefaultButton from '../../components/UI/DefaultButton/DefaultButton';
 
 class SharePlaceScreen extends Component {
   state = {
@@ -33,14 +32,12 @@ class SharePlaceScreen extends Component {
           </MainText>
           <PickImage />
           <PickLocation />
-          <PlaceInput
-            placeName={this.state.placeName}
+          <Input
+            placeholder="Place Name"
+            value={this.state.placeName}
             onChangeText={this.placeNameChangedHandler}
           />
-          <DefaultButton
-            title="Share the Place!"
-            onPress={this.placeAddedHandler}
-          />
+          <Button title="Share the Place!" onPress={this.placeAddedHandler} />
         </View>
       </ScrollView>
     );

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, StyleSheet, Animated } from 'react-native';
+import { Button } from 'react-native-elements';
 import PlaceList from '../../components/PlaceList/PlaceList';
-import DefaultButton from '../../components/UI/DefaultButton/DefaultButton';
 
 class FindPlaceScreen extends Component {
   state = {
@@ -57,10 +57,7 @@ class FindPlaceScreen extends Component {
           ]
         }}
       >
-        <DefaultButton
-          title="Search Button"
-          onPress={this.placesSearchHandler}
-        />
+        <Button title="Search Button" onPress={this.placesSearchHandler} />
       </Animated.View>
     );
     if (this.state.placesLoaded) {
