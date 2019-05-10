@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { Input, Button } from 'react-native-elements';
+import { Formik } from 'formik';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import * as Yup from 'yup';
 import { addPlace } from '../../store/actions/index';
 import PickImage from '../../components/PickImage/PickImage';
 import PickLocation from '../../components/PickLocation/PickLocation';
@@ -17,29 +20,61 @@ class SharePlaceScreen extends Component {
     this.setState({ placeName: val });
   };
 
-  placeAddedHandler = () => {
-    if (this.state.placeName.trim() !== '') {
-      this.props.onAddPlace(this.state.placeName);
-    }
+  _handleSubmit = (values, actions) => {
+    this.props.onAddPlace(values.placeName);
+    actions.setSubmitting(false);
   };
 
   render() {
     return (
-      <ScrollView>
+      <KeyboardAwareScrollView>
         <View style={styles.container}>
           <MainText>
             <HeadingText>Share a place with us!</HeadingText>
           </MainText>
           <PickImage />
           <PickLocation />
-          <Input
-            placeholder="Place Name"
-            value={this.state.placeName}
-            onChangeText={this.placeNameChangedHandler}
+          <Formik
+            initialValues={{
+              placeName: ''
+            }}
+            onSubmit={this._handleSubmit}
+            validationSchema={Yup.object().shape({
+              placeName: Yup.string()
+                .min(3)
+                .required()
+            })}
+            render={({
+              values,
+              handleSubmit,
+              handleChange,
+              handleBlur,
+              touched,
+              errors,
+              isValid,
+              isSubmitting
+            }) => (
+              <React.Fragment>
+                <Input
+                  label="Place Name"
+                  placeholder="Playa del Carmen"
+                  value={values.placeName}
+                  onChangeText={handleChange('placeName')}
+                  onBlur={handleBlur('placeName')}
+                  autoCorrect={false}
+                  errorMessage={touched.placeName && errors.placeName}
+                />
+                <Button
+                  title="Submit Place"
+                  onPress={handleSubmit}
+                  disabled={!isValid || isSubmitting}
+                  loading={isSubmitting}
+                />
+              </React.Fragment>
+            )}
           />
-          <Button title="Share the Place!" onPress={this.placeAddedHandler} />
         </View>
-      </ScrollView>
+      </KeyboardAwareScrollView>
     );
   }
 }
