@@ -17,7 +17,18 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCalendarsUsageDescription": "Allow RN-Course experiences to access your calendar",
+        "NSCameraUsageDescription": "RN-Course uses your camera to scan project QR codes. RN-Course experiences you open may use the camera with the RN-Course camera API.",
+        "NSContactsUsageDescription": "Allow RN-Course experiences to access your contacts",
+        "NSLocationWhenInUseUsageDescription": "Allow RN-Course experiences to use your location",
+        "NSMicrophoneUsageDescription": "Allow RN-Course experiences to access your microphone",
+        "NSMotionUsageDescription": "Allow RN-Course experiences to access your device's accelerometer",
+        "NSPhotoLibraryAddUsageDescription": "Give RN-Course experiences permission to save photos",
+        "NSPhotoLibraryUsageDescription": "Give RN-Course experiences permission to access your photos",
+        "NSRemindersUsageDescription": "Allow RN-Course experiences to access your reminders"
+      }
     }
   }
 }
