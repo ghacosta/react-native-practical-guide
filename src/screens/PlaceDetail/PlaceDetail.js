@@ -3,7 +3,6 @@ import {
   View,
   Image,
   Text,
-  ScrollView,
   StyleSheet,
   TouchableOpacity,
   Platform,
@@ -12,6 +11,7 @@ import {
 import { connect } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 import { deletePlace } from '../../store/actions/index';
+import { MapView } from 'expo';
 
 class PlaceDetailScreen extends Component {
   state = {
@@ -55,8 +55,15 @@ class PlaceDetailScreen extends Component {
             : styles.landscapeContainer
         ]}
       >
-        <View style={styles.subContainer}>
-          <Image source={selectedPlace.image} style={styles.placeImage} />
+        <View style={styles.imageMapContainer}>
+          <View style={styles.subContainer}>
+            <Image source={selectedPlace.image} style={styles.placeImage} />
+          </View>
+          <View style={styles.subContainer}>
+            <MapView style={styles.map} initialRegion={selectedPlace.location}>
+              <MapView.Marker coordinate={selectedPlace.location} />
+            </MapView>
+          </View>
         </View>
         <View style={styles.subContainer}>
           <View>
@@ -93,9 +100,12 @@ const styles = StyleSheet.create({
   landscapeContainer: {
     flexDirection: 'row'
   },
+  imageMapContainer: {
+    flex: 2
+  },
   placeImage: {
-    height: 200,
-    width: '100%'
+    width: '100%',
+    height: '100%'
   },
   placeName: {
     fontWeight: 'bold',
@@ -104,6 +114,9 @@ const styles = StyleSheet.create({
   },
   deleteButton: {
     alignItems: 'center'
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject
   }
 });
 

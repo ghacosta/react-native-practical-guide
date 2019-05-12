@@ -23,16 +23,21 @@ class PickLocation extends Component {
       latitude: coords.latitude,
       longitude: coords.longitude
     });
-    this.setState(prevState => {
-      return {
-        focusedLocation: {
-          ...prevState.focusedLocation,
-          latitude: coords.latitude,
-          longitude: coords.longitude
-        },
-        locationChosen: true
-      };
-    });
+    this.setState(
+      prevState => {
+        return {
+          focusedLocation: {
+            ...prevState.focusedLocation,
+            latitude: coords.latitude,
+            longitude: coords.longitude
+          },
+          locationChosen: true
+        };
+      },
+      () => {
+        this.props.form.setFieldValue('location', this.state.focusedLocation);
+      }
+    );
   };
 
   getLocationHandler = async () => {

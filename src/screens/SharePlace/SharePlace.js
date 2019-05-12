@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { Input, Button } from 'react-native-elements';
-import { Formik } from 'formik';
+import { Formik, Field } from 'formik';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import * as Yup from 'yup';
 import { addPlace } from '../../store/actions/index';
@@ -12,16 +12,8 @@ import HeadingText from '../../components/UI/HeadingText/HeadingText';
 import MainText from '../../components/UI/MainText/MainText';
 
 class SharePlaceScreen extends Component {
-  state = {
-    placeName: ''
-  };
-
-  placeNameChangedHandler = val => {
-    this.setState({ placeName: val });
-  };
-
   _handleSubmit = (values, actions) => {
-    this.props.onAddPlace(values.placeName);
+    this.props.onAddPlace(values);
     actions.setSubmitting(false);
   };
 
@@ -33,10 +25,10 @@ class SharePlaceScreen extends Component {
             <HeadingText>Share a place with us!</HeadingText>
           </MainText>
           <PickImage />
-          <PickLocation />
           <Formik
             initialValues={{
-              placeName: ''
+              placeName: '',
+              location: null
             }}
             onSubmit={this._handleSubmit}
             validationSchema={Yup.object().shape({
@@ -55,6 +47,7 @@ class SharePlaceScreen extends Component {
               isSubmitting
             }) => (
               <React.Fragment>
+                <Field name="location" component={PickLocation} />
                 <Input
                   label="Place Name"
                   placeholder="Playa del Carmen"
@@ -95,7 +88,7 @@ const styles = StyleSheet.create({
 
 const mapDispatchToProps = dispatch => {
   return {
-    onAddPlace: placeName => dispatch(addPlace(placeName))
+    onAddPlace: place => dispatch(addPlace(place))
   };
 };
 
