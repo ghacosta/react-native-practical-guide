@@ -1,19 +1,46 @@
 import React, { Component } from 'react';
 import { View, Image, StyleSheet } from 'react-native';
+import { ImagePicker, Permissions } from 'expo';
 import DefaultButton from '../UI/DefaultButton/DefaultButton';
-import placeholderImage from '../../assets/placeholder.jpeg';
 
 class PickImage extends Component {
+  state = {
+    pickedImage: null
+  };
+
+  pickImageHandler = async () => {
+    // const { statusCamera } = await Permissions.askAsync(Permissions.CAMERA);
+    const { status: statusCameraRoll } = await Permissions.askAsync(
+      Permissions.CAMERA_ROLL
+    );
+    console.log(statusCameraRoll);
+    if (statusCameraRoll) {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true,
+        aspect: [4, 3]
+      });
+      console.log(result);
+
+      if (!result.cancelled) {
+        this.setState(prevState => {
+          return {
+            pickedImage: {
+              ...prevState.pickedImage,
+              uri: result.uri
+            }
+          };
+        });
+      }
+    }
+  };
+
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.placeholder}>
-          <Image source={placeholderImage} style={styles.previewImage} />
+          <Image source={this.state.pickedImage} style={styles.previewImage} />
         </View>
-        <DefaultButton
-          title="Pick an Image"
-          onPress={() => alert('button pressed')}
-        />
+        <DefaultButton title="Pick an Image" onPress={this.pickImageHandler} />
       </View>
     );
   }
