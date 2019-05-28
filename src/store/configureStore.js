@@ -1,6 +1,9 @@
-import { createStore, combineReducers, compose } from 'redux';
-
+import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
+import createSagaMiddleware from 'redux-saga';
+import rootSaga from './sagas/index';
 import placesReducer from './reducers/places';
+
+const sagaMiddleware = createSagaMiddleware();
 
 const rootReducer = combineReducers({
   places: placesReducer
@@ -13,10 +16,13 @@ if (__DEV__) {
 }
 
 const configureStore = () => {
-  return createStore(
-    rootReducer, 
-    composeEnhancers()
+  const store = createStore(
+    rootReducer,
+    composeEnhancers(applyMiddleware(sagaMiddleware))
   );
-}
+  sagaMiddleware.run(rootSaga);
+
+  return store;
+};
 
 export default configureStore;
