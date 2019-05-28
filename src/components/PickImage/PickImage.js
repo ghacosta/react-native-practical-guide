@@ -13,23 +13,28 @@ class PickImage extends Component {
     const { status: statusCameraRoll } = await Permissions.askAsync(
       Permissions.CAMERA_ROLL
     );
-    console.log(statusCameraRoll);
     if (statusCameraRoll) {
       let result = await ImagePicker.launchImageLibraryAsync({
         allowsEditing: true,
-        aspect: [4, 3]
+        aspect: [4, 3],
+        base64: true
       });
-      console.log(result);
 
       if (!result.cancelled) {
-        this.setState(prevState => {
-          return {
-            pickedImage: {
-              ...prevState.pickedImage,
-              uri: result.uri
-            }
-          };
-        });
+        this.setState(
+          prevState => {
+            return {
+              pickedImage: {
+                ...prevState.pickedImage,
+                uri: result.uri,
+                base64: result.base64
+              }
+            };
+          },
+          () => {
+            this.props.form.setFieldValue('image', this.state.pickedImage);
+          }
+        );
       }
     }
   };

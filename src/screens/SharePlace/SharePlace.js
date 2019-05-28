@@ -24,11 +24,11 @@ class SharePlaceScreen extends Component {
           <MainText>
             <HeadingText>Share a place with us!</HeadingText>
           </MainText>
-          <PickImage />
           <Formik
             initialValues={{
               placeName: '',
-              location: null
+              location: null,
+              image: null
             }}
             onSubmit={this._handleSubmit}
             validationSchema={Yup.object().shape({
@@ -47,6 +47,7 @@ class SharePlaceScreen extends Component {
               isSubmitting
             }) => (
               <React.Fragment>
+                <Field name="image" component={PickImage} />
                 <Field name="location" component={PickLocation} />
                 <Input
                   label="Place Name"
